@@ -5,6 +5,7 @@ import lk.ijse.dep9.orm.annotation.Table;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -92,6 +93,7 @@ public class InitializedDB {
             String name = declaredField.getName();
             Class<?> dataType = declaredField.getType();
             Id primaryKey = declaredField.getDeclaredAnnotation(Id.class);
+            if (Modifier.isStatic(declaredField.getModifiers())) continue;
 
             if (!supportedTypes.containsKey(dataType)) throw new RuntimeException("We don't support "+dataType+" yet.");
 
