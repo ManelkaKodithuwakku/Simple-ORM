@@ -38,16 +38,15 @@ public class InitializedDB {
             throw new RuntimeException(e);
         }
 
-        List<String> className = new ArrayList<>();
+        List<String> classNames = new ArrayList<>();
 
         for (String packageToScan : packagesToScan) {
             var packageName= packageToScan;
-            packageToScan = packagesToScan[0].replaceAll("[.]", "/");
-            System.out.println(packageToScan);
+            packageToScan = packageToScan.replaceAll("[.]", "/");
             URL resource = InitializedDB.class.getResource("/" + packageToScan);
             try {
                 File file = new File(resource.toURI());
-                className.addAll(Arrays.asList(file.list()).stream()
+                classNames.addAll(Arrays.asList(file.list()).stream()
                         .map(name -> packageName+"."+name.replace(".class",""))
                         .collect(Collectors.toList()));
             } catch (URISyntaxException e) {
@@ -55,9 +54,9 @@ public class InitializedDB {
             }
         }
 
-        for (String className1 : className) {
+        for (String className : classNames) {
             try {
-                Class<?> loadedClass = Class.forName(className1);
+                Class<?> loadedClass = Class.forName(className);
                 Table tableAnnotation = loadedClass.getDeclaredAnnotation(Table.class);
                 if (tableAnnotation != null){
                     createTable(loadedClass,connection);
