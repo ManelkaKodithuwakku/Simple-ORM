@@ -10,6 +10,7 @@
 
 ---
 
+
 ## Supported Data Types
 
 - <h6>Integer / int</h6>
